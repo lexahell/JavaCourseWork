@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  server:
+    image: java-course-work:0.0.1
+    container_name: java-course-work
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/JavaCourseWork
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - database
+  database:
+    image: postgres:16.0-alpine
+    container_name: database
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=JavaCourseWork
